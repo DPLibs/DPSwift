@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 /// Enum for determining the screen offset.
 ///
