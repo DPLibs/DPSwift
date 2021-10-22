@@ -11,7 +11,5 @@ public extension Collection {
     func element(at index: Index) -> Element? {
         self.indices.contains(index) ? self[index] : nil
     }
-    
-    
-    
+
 }

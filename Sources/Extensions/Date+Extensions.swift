@@ -7,7 +7,7 @@ public extension Date {
     /// - Parameter calendar: Calendar for date.
     /// - Returns: Date with time of calendar.
     ///
-    static func now(withTime time: Time = .zero, of calendar: Calendar = .current) -> Date {
+    static func today(withTime time: Time = .zero, of calendar: Calendar = .current) -> Date {
         let now = Date()
         
         return calendar.date(bySettingHour: time.hours, minute: time.minutes, second: time.seconds, of: now) ?? now
