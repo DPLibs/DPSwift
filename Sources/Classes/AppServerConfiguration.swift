@@ -4,6 +4,10 @@ import Foundation
 ///
 public struct AppServerConfiguration {
     
+    /// For conform to `Equatable`
+    ///
+    public let tag: Int
+    
     /// Url string with a port for defining a rest server url. Example: `httр://example.com:8000`.
     ///
     public let restUrl: String
@@ -21,9 +25,19 @@ public struct AppServerConfiguration {
     /// - Parameter socketUrl - Url string with a port for defining a socket server url. Example: `wss://example.com:8001`.
     /// - Parameter target - Server configuration target. Example: `D` (develop server).
     ///
-    public init(restUrl: String, socketUrl: String, target: String) {
+    public init(tag: Int, restUrl: String, socketUrl: String, target: String) {
+        self.tag = tag
         self.restUrl = restUrl
         self.socketUrl = socketUrl
         self.target = target
     }
+}
+
+// MARK: - Equatable
+extension AppServerConfiguration: Equatable {
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.tag == rhs.tag
+    }
+    
 }
