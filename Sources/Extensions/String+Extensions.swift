@@ -25,8 +25,14 @@ public extension String {
     ///
     static func randomString(length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
-        let chars = (0..<length).map({ _ in letters.randomElement() }) as? [Character] ?? []
-        return String(chars)
+        var characters: [Character] = []
+        
+        (0..<length).forEach({ _ in
+            guard let character = letters.randomElement() else { return }
+            characters += [character]
+        })
+        
+        return String(characters)
     }
     
 }

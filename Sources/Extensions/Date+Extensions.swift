@@ -8,9 +8,15 @@ public extension Date {
     /// - Returns: Date with time of calendar.
     ///
     static func today(withTime time: Time = .zero, of calendar: Calendar = .current) -> Date {
-        let now = Date()
+        let date = Date()
         
-        return calendar.date(bySettingHour: time.hours, minute: time.minutes, second: time.seconds, of: now) ?? now
+        return calendar.date(bySettingHour: time.hours, minute: time.minutes, second: time.seconds, of: date) ?? date
+    }
+    
+    static func yesterday(withTime time: Time = .zero, of calendar: Calendar = .current) -> Date {
+        let date = Date().addingDays(-1)
+        
+        return calendar.date(bySettingHour: time.hours, minute: time.minutes, second: time.seconds, of: date) ?? date
     }
     
     // MARK: - Add methods
@@ -165,6 +171,30 @@ extension Date: TimeStructAdduction {
     
     public var toTimeUnit: TimeUnit {
         .init(seconds: self.timeIntervalSince1970)
+    }
+    
+}
+
+// MARK: - Date + Time
+public extension Date {
+    
+    func setTime(_ time: Time, of calendar: Calendar = .current) -> Date {
+        let date = self
+        
+        return calendar.date(bySettingHour: time.hours, minute: time.minutes, second: time.seconds, of: date) ?? date
+    }
+    
+    func getTime() -> Time {
+        let date = self
+        let calanedar = Calendar.current
+        let dateComponents = calanedar.dateComponents([.hour, .minute, .second, .nanosecond], from: date)
+        
+        return .init(
+            hours: dateComponents.hour ?? 0,
+            minutes: dateComponents.minute ?? 0,
+            seconds: dateComponents.second ?? 0,
+            milliseconds: (dateComponents.nanosecond ?? 0) / 1_000_000
+        )
     }
     
 }
