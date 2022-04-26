@@ -6,26 +6,49 @@ public protocol DPLoggable {
     
     /// If `talse` all methods logging not printing.
     ///
-    var loggingEnabled: Bool { get }
+    static var isLoggableEnabled: Bool { get }
     
-    /// Printing `items` by `print()`.
+    /// Printing `items` and `method (#function)` by `print()`.
     /// - Parameter items: Sequence of items for printing.
     ///
-    func logging(_ items: Any...)
+    static func log(method: String?, _ items: Any...)
+    
+    static func log(_ items: Any...)
+    static func logError(method: String?, _ error: Error?)
+    static func logError(_ error: Error?)
 }
 
-// MARK: - DPLoggable + Default
 public extension DPLoggable {
     
-    var loggingEnabled: Bool {
+    static var isLoggableEnabled: Bool {
         true
     }
     
-    func logging(_ items: Any...) {
-        guard self.loggingEnabled else { return }
-        var itemsPrint: [String] = ["[\(NSStringFromClass(Self.self as? AnyClass ?? NSObject.self).components(separatedBy: ".").last ?? "")] - "]
-        itemsPrint.append(contentsOf: items.map({ "\($0)" }))
-        print(itemsPrint.joined(separator: " "))
+    static func log(method: String?, _ items: Any...) {
+        guard self.isLoggableEnabled else { return }
+        
+        let className = String(describing: Self.self)
+        var printItems: [String] = ["[\(className)]"]
+        
+        if let method = method {
+            printItems += ["[\(method)]"]
+        }
+        
+        printItems += items.map({ "\($0)" })
+        print(printItems.joined(separator: " - "))
+    }
+    
+    static func log(_ items: Any...) {
+        self.log(method: nil, items)
+    }
+    
+    static func logError(method: String?, _ error: Error?) {
+        guard let error = error else { return }
+        self.log(method: method, "error: \(error.localizedDescription)")
+    }
+    
+    static func logError(_ error: Error?) {
+        self.logError(method: nil, error)
     }
     
 }
