@@ -14,6 +14,17 @@ public struct DateFormatType {
     public init(_ dateFormat: String) {
         self.dateFormat = dateFormat
     }
+    
+    
+}
+
+// MARK: - DateFormatType + ExpressibleByStringLiteral
+extension DateFormatType: ExpressibleByStringLiteral {
+    
+    public init(stringLiteral value: String) {
+        self.dateFormat = value
+    }
+    
 }
 
 // MARK: - DateFormatType + Constants
