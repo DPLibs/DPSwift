@@ -2,21 +2,28 @@ import Foundation
 
 public extension Date {
     
-    /// Return now `Date` with `Time` of `Calendar`.
+    /// Return now `Date` with `DPTime` of `Calendar`.
     /// - Parameter time: Current time.
     /// - Parameter calendar: Calendar for date.
     /// - Returns: Date with time of calendar.
     ///
-    static func today(withTime time: Time = .zero, of calendar: Calendar = .current) -> Date {
+    static func today(withTime time: DPTime = .zero, calendar: Calendar = .current) -> Date {
         let date = Date()
+        let result = calendar.date(bySettingHour: time.hours, minute: time.minutes, second: time.seconds, of: date) ?? date
         
-        return calendar.date(bySettingHour: time.hours, minute: time.minutes, second: time.seconds, of: date) ?? date
+        return result
     }
     
-    static func yesterday(withTime time: Time = .zero, of calendar: Calendar = .current) -> Date {
-        let date = Date().addingDays(-1)
+    /// Return yesterday `Date` with `DPTime` of `Calendar`.
+    /// - Parameter time: Current time.
+    /// - Parameter calendar: Calendar for date.
+    /// - Returns: Date with time of calendar.
+    ///
+    static func yesterday(withTime time: DPTime = .zero, calendar: Calendar = .current) -> Date {
+        let date = Date().addingComponent(.day, value: -1, calendar: calendar) ?? Date()
+        let result = calendar.date(bySettingHour: time.hours, minute: time.minutes, second: time.seconds, of: date) ?? date
         
-        return calendar.date(bySettingHour: time.hours, minute: time.minutes, second: time.seconds, of: date) ?? date
+        return result
     }
     
     // MARK: - Add methods
@@ -24,67 +31,60 @@ public extension Date {
     /// Return date with adding dateComponent value.
     /// - Parameter component: type of dateComponent.
     /// - Parameter value: value of dateComponent.
+    /// - Parameter calendar: Calendar for date.
     /// - Returns: Date with adding dateComponent.
     ///
-    func addingComponent(_ component: Calendar.Component, value: Int) -> Date? {
-        Calendar.current.date(byAdding: component, value: value, to: self)
-    }
-    
-    /// Return date with adding days.
-    /// - Parameter years: Days to adding.
-    /// - Returns: Date with adding days.
-    ///
-    func addingDays(_ days: Int) -> Date {
-        self.addingTimeInterval(TimeInterval(days * 60 * 60 * 24))
-    }
-    
-    /// Return date with adding years.
-    /// - Parameter years: Years to adding.
-    /// - Returns: Date with adding years.
-    ///
-    func addingYears(_ years: Int) -> Date? {
-        self.addingComponent(.year, value: years)
+    func addingComponent(_ component: Calendar.Component, value: Int, calendar: Calendar = .current) -> Date? {
+        calendar.date(byAdding: component, value: value, to: self)
     }
     
     // MARK: - Get methods
     
     /// Return week of year number.
+    /// - Parameter calendar: Calendar for date.
     /// - Returns: Week of year number.
     ///
-    func getWeekOfYear() -> Int {
-        Calendar.current.component(.weekOfYear, from: self)
+    func weekOfYear(calendar: Calendar = .current) -> Int {
+        calendar.component(.weekOfYear, from: self)
     }
     
     /// Return age from birthday date.
+    /// - Parameter calendar: Calendar for date.
     /// - Returns: Age value.
     ///
-    var ageFromBirthday: Int {
-        Calendar.current.dateComponents([.year, .month], from: self, to: Date()).year ?? 0
+    func ageFromBirthday(calendar: Calendar = .current) -> Int {
+        calendar.dateComponents([.year, .month], from: self, to: Date()).year ?? 0
     }
     
     /// Return first date of month.
+    /// - Parameter calendar: Calendar for date.
     /// - Returns: first date of month.
     ///
-    var firstDateOfMonth: Date? {
-        Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: self)))
+    func startOfMonth(calendar: Calendar = .current) -> Date? {
+        let startOfDay = calendar.startOfDay(for: self)
+        let dateComponents = calendar.dateComponents([.year, .month], from: startOfDay)
+        let result = calendar.date(from: dateComponents)
+        
+        return result
     }
 
     /// Return last date of month.
+    /// - Parameter calendar: Calendar for date.
     /// - Returns: last date of month.
     ///
-    var lastDateOfMonth: Date? {
-        guard let startDateOfMonth = self.firstDateOfMonth else { return nil }
-        return Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: startDateOfMonth)
+    func endOfMonth(calendar: Calendar = .current) -> Date? {
+        guard let startOfMonth = self.startOfMonth(calendar: calendar) else { return nil }
+        let dateComponents = DateComponents(month: 1, day: -1)
+        let result = calendar.date(byAdding: dateComponents, to: startOfMonth)
+        
+        return result
     }
     
     /// Returns all dates of the days of the current week.
-    /// - Parameter firstWeekday: Starting day of the week. Default: `monday`.
+    /// - Parameter calendar: Calendar for date.
     /// - Returns: Dates of the days of the current week .
     ///
-    func getWeekDates(firstWeekday: WeekDay = .monday) -> [Date] {
-        var calendar = Calendar.current
-        calendar.firstWeekday = firstWeekday.rawValue
-    
+    func weekDates(calendar: Calendar = .current) -> [Date] {
         let today = calendar.startOfDay(for: self)
         guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: today) else { return [] }
     
@@ -97,34 +97,23 @@ public extension Date {
         return week
     }
     
-    /// Returns all dates of the days of the current week with dates of many weeks next.
-    /// - Parameter weeksCount: Count of weeks next.
-    /// - Parameter firstWeekday: Starting day of the week. Default: `monday`.
-    /// - Returns: Dates of the days of the current week .
-    ///
-    func getWeekDates(withManyWeeksNext weeksCount: Int, firstWeekday: WeekDay = .monday) -> [Date] {
-        var result: [Date] = []
-        let current = self
-    
-        for index in 0...weeksCount {
-            guard let date = current.addingComponent(.day, value: index * 7) else { continue }
-            result += date.getWeekDates(firstWeekday: firstWeekday)
-        }
-    
-        result.sort()
-        return result
-    }
-    
     /// Returns all dates of the days of the current month.
+    /// - Parameter calendar: Calendar for date.
     /// - Returns: Dates of the days of the current month.
     ///
-    func getMonthDates() -> [Date] {
-        guard let range = Calendar.current.range(of: .day, in: .month, for: self), var day = self.firstDateOfMonth else { return [] }
+    func monthDates(calendar: Calendar = .current) -> [Date] {
+        guard
+            let range = calendar.range(of: .day, in: .month, for: self),
+            var day = self.startOfMonth(calendar: calendar)
+        else { return [] }
+        
         var days: [Date] = []
         
         for _ in 1...range.count {
             days.append(day)
-            day = day.addingDays(1)
+            
+            guard let nextDay = day.addingComponent(.day, value: 1, calendar: calendar) else { break }
+            day = nextDay
         }
         
         return days
@@ -132,28 +121,43 @@ public extension Date {
     
     /// Returns value of calendar component.
     /// - Parameter compontent: Calendar component.
+    /// - Parameter calendar: Calendar for date.
     /// - Returns: Compenent in value.
     ///
-    func getCompontent(_ compontent: Calendar.Component) -> Int {
-        Calendar.current.component(compontent, from: self)
+    func getCompontent(_ compontent: Calendar.Component, calendar: Calendar = .current) -> Int {
+        calendar.component(compontent, from: self)
     }
     
     // MARK: - Compare methods
     
     /// Returns true if self is equal to date with granularity to day.
     /// - Parameter date: Date for comparison.
+    /// - Parameter component: Component to granularity.
+    /// - Parameter calendar: Calendar for date.
     /// - Returns: Comparison result.
     ///
-    func isEqualToDateToGranularityDay(_ date: Date) -> Bool {
-        Calendar.current.compare(self, to: date, toGranularity: .day) == .orderedSame
+    func isEqual(to date: Date, toGranularity component: Calendar.Component = .day, calendar: Calendar = .current) -> Bool {
+        calendar.compare(self, to: date, toGranularity: component) == .orderedSame
     }
     
     /// Returns true if self is less to date with granularity to day.
     /// - Parameter date: Date for comparison.
+    /// - Parameter component: Component to granularity.
+    /// - Parameter calendar: Calendar for date.
     /// - Returns: Comparison result.
     ///
-    func isLessDateToGranularityDay(_ date: Date) -> Bool {
-        Calendar.current.compare(self, to: date, toGranularity: .day) == .orderedAscending
+    func isLess(than date: Date, toGranularity component: Calendar.Component = .day, calendar: Calendar = .current) -> Bool {
+        calendar.compare(self, to: date, toGranularity: component) == .orderedAscending
+    }
+    
+    /// Returns true if self is greater to date with granularity to day.
+    /// - Parameter date: Date for comparison.
+    /// - Parameter component: Component to granularity.
+    /// - Parameter calendar: Calendar for date.
+    /// - Returns: Comparison result.
+    ///
+    func isGreater(than date: Date, toGranularity component: Calendar.Component = .day, calendar: Calendar = .current) -> Bool {
+        calendar.compare(self, to: date, toGranularity: component) == .orderedDescending
     }
     
 }
@@ -165,29 +169,28 @@ extension Date: TimeStructAdduction {
         self
     }
     
-    public var toTimeStamp: TimeStamp {
+    public var toTimeStamp: DPTimeStamp {
         .init(seconds: self.timeIntervalSince1970)
     }
     
-    public var toTimeUnit: TimeUnit {
+    public var toTimeUnit: DPTimeInterval {
         .init(seconds: self.timeIntervalSince1970)
     }
     
 }
 
-// MARK: - Date + Time
+// MARK: - Date + DPTime
 public extension Date {
     
-    func setTime(_ time: Time, of calendar: Calendar = .current) -> Date {
+    func setTime(_ time: DPTime, calendar: Calendar = .current) -> Date {
         let date = self
         
         return calendar.date(bySettingHour: time.hours, minute: time.minutes, second: time.seconds, of: date) ?? date
     }
     
-    func getTime() -> Time {
+    func getTime(calendar: Calendar = .current) -> DPTime {
         let date = self
-        let calanedar = Calendar.current
-        let dateComponents = calanedar.dateComponents([.hour, .minute, .second, .nanosecond], from: date)
+        let dateComponents = calendar.dateComponents([.hour, .minute, .second, .nanosecond], from: date)
         
         return .init(
             hours: dateComponents.hour ?? 0,

@@ -2,7 +2,7 @@ import Foundation
 
 /// Struct for determining the time.
 ///
-public struct Time {
+public struct DPTime {
     
     // MARK: - Props
     
@@ -106,8 +106,8 @@ public struct Time {
     
 }
 
-// MARK: - Time + Equatable
-extension Time: Equatable {
+// MARK: - DPTime + Equatable
+extension DPTime: Equatable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.milliseconds == rhs.milliseconds &&
@@ -118,8 +118,8 @@ extension Time: Equatable {
     
 }
 
-// MARK: - Time + Comparable
-extension Time: Comparable {
+// MARK: - DPTime + Comparable
+extension DPTime: Comparable {
     
     public static func < (lhs: Self, rhs: Self) -> Bool {
         guard lhs.hours == rhs.hours else { return lhs.hours < rhs.hours }
@@ -130,10 +130,10 @@ extension Time: Comparable {
     
 }
 
-// MARK: - Time + ZeroAdduction
-extension Time: ZeroAdduction {
+// MARK: - DPTime + ZeroAdduction
+extension DPTime: ZeroAdduction {
     
-    static public var zero: Time {
+    static public var zero: DPTime {
         .init(hours: .zero, minutes: .zero, seconds: .zero, milliseconds: .zero)
     }
 

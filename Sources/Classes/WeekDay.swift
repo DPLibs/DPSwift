@@ -99,7 +99,6 @@ public extension WeekDay {
         return result
     }
 
-    #warning("To DPSwift")
     var title: String {
         let calendar = Calendar.current
         let date = calendar.date(bySetting: .weekday, value: self.rawValue, of: .init())
@@ -137,7 +136,7 @@ public extension WeekDay {
     func toLocalString(with format: StringFormat) -> String {
         let calendar = Calendar.current
         let date = calendar.date(bySetting: .weekday, value: self.rawValue, of: .init())
-        let dateFromatType = DateFormatType(format.rawValue)
+        let dateFromatType = DPDateFormatType(format.rawValue)
         let localString = date?.toLocalString(withFormatType: dateFromatType) ?? ""
         return localString
     }

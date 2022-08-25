@@ -1,5 +1,5 @@
 //
-//  AnimationInfo.swift
+//  DPAnimationInfo.swift
 //  DPLibrary
 //
 //  Created by Дмитрий Поляков on 20.04.2021.
@@ -10,7 +10,7 @@ import UIKit
 
 /// Struct for for defining basic animation properties.
 ///
-public struct AnimationInfo {
+public struct DPAnimationInfo {
     
     public let curve: UIView.AnimationCurve
     public let options: UIView.AnimationOptions

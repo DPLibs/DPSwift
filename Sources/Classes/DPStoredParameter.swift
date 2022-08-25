@@ -6,23 +6,17 @@ import KeychainSwift
 ///
 public struct DPStoredParameter<ParameterType: Any> {
     
-    // MARK: - Static
+    // MARK: - Init
     
-    /// Struct for defining the store type.
+    /// Default initialize.
+    /// - Parameter name - Parameter stored name.
+    /// - Parameter store - Store type.
     ///
-    public enum Store {
-        
-        /// Stored in `UserDefaults`.
-        ///
-        case UserDefaults
-        
-        /// Stored in `Keychain`.
-        ///
-        case Keychain
-    }
-    
-    public static func create(_ name: String, store: Store) -> DPStoredParameter<ParameterType> {
-        .init(name, store: store)
+    public init(_ name: String, store: Store) {
+        self.keychainKeyPrefix = "\(Bundle.main.bundleIdentifier ?? "")_keychain_"
+        self.name = name
+        self.key = "stored_parameter_\(name)"
+        self.store = store
     }
     
     // MARK: - Props
@@ -43,68 +37,58 @@ public struct DPStoredParameter<ParameterType: Any> {
     ///
     public let store: Store
     
-    // MARK: - Init
     
-    /// Default initialize.
-    /// - Parameter name - Parameter stored name.
-    /// - Parameter store - Store type.
-    ///
-    public init(_ name: String, store: Store) {
-        self.keychainKeyPrefix = "\(Bundle.main.bundleIdentifier ?? "")_keychain_"
-        self.name = name
-        self.key = "stored_parameter_\(name)"
-        self.store = store
-    }
-    
-    // MARK: - Public methods
-    
-    /// Set paramter value.
-    /// - Parameter value - Parameter value.
-    ///
-    public func set(_ value: ParameterType) {
-        switch self.store {
-        case .UserDefaults:
-            UserDefaults.standard.set(value, forKey: self.key)
-        case .Keychain:
-            self.setInKeychain(value)
-        }
-    }
-    
-    private func setInKeychain(_ value: ParameterType) {
-        let keychain = KeychainSwift(keyPrefix: self.keychainKeyPrefix)
-        
-        switch value {
-        case let string as String:
-            keychain.set(string, forKey: self.key)
-        case let int as Int:
-            keychain.set(int.description, forKey: self.key)
-        case let double as Double:
-            keychain.set(double.description, forKey: self.key)
-        case let float as Float:
-            keychain.set(float.description, forKey: self.key)
-        case let bool as Bool:
-            keychain.set(bool, forKey: self.key)
-        case let data as Data:
-            keychain.set(data, forKey: self.key)
-        default:
-            break
-        }
-    }
-    
-    /// Get paramter value.
+    /// Get/Set paramter value.
     /// - Returns: Paramter value or nil.
     ///
-    public func get() -> ParameterType? {
-        switch self.store {
-        case .UserDefaults:
-            return UserDefaults.standard.object(forKey: self.key) as? ParameterType
-        case .Keychain:
-            return self.getInKeychain()
+    public var value: ParameterType? {
+        get {
+            switch self.store {
+            case .UserDefaults:
+                return UserDefaults.standard.object(forKey: self.key) as? ParameterType
+            case .Keychain:
+                return self.getFromKeychain()
+            }
         }
-        
+        set {
+            guard let value = newValue else {
+                self.remove()
+                return
+            }
+
+            switch self.store {
+            case .UserDefaults:
+                UserDefaults.standard.set(value, forKey: self.key)
+            case .Keychain:
+                self.setToKeychain(value)
+            }
+        }
     }
     
-    private func getInKeychain() -> ParameterType? {
+}
+
+// MARK: - Store
+public extension DPStoredParameter {
+    
+    /// Struct for defining the store type.
+    ///
+    enum Store {
+        
+        /// Stored in `UserDefaults`.
+        ///
+        case UserDefaults
+        
+        /// Stored in `Keychain`.
+        ///
+        case Keychain
+    }
+    
+}
+
+// MARK: - Methods
+private extension DPStoredParameter {
+    
+    func getFromKeychain() -> ParameterType? {
         let keychain = KeychainSwift(keyPrefix: self.keychainKeyPrefix)
         let value: Any?
         
@@ -128,15 +112,36 @@ public struct DPStoredParameter<ParameterType: Any> {
         return value as? ParameterType
     }
     
+    func setToKeychain(_ value: ParameterType) {
+        let keychain = KeychainSwift(keyPrefix: self.keychainKeyPrefix)
+        
+        switch value {
+        case let string as String:
+            keychain.set(string, forKey: self.key)
+        case let int as Int:
+            keychain.set(int.description, forKey: self.key)
+        case let double as Double:
+            keychain.set(double.description, forKey: self.key)
+        case let float as Float:
+            keychain.set(float.description, forKey: self.key)
+        case let bool as Bool:
+            keychain.set(bool, forKey: self.key)
+        case let data as Data:
+            keychain.set(data, forKey: self.key)
+        default:
+            break
+        }
+    }
+    
     /// Remove paramter value.
     ///
-    public func remove() {
+    func remove() {
         switch self.store {
         case .UserDefaults:
             UserDefaults.standard.removeObject(forKey: self.key)
         case .Keychain:
             KeychainSwift(keyPrefix: self.keychainKeyPrefix).delete(self.key)
         }
-        
     }
+    
 }

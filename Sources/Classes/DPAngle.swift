@@ -3,7 +3,7 @@ import UIKit
 
 /// Struct for defining the geometric angle.
 ///
-public struct Angle {
+public struct DPAngle {
     
     // MARK: - Props
     
@@ -34,8 +34,8 @@ public struct Angle {
     }
 }
 
-// MARK: - Angle + Equatable
-extension Angle: Equatable {
+// MARK: - DPAngle + Equatable
+extension DPAngle: Equatable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.degrees == rhs.degrees &&
@@ -44,8 +44,8 @@ extension Angle: Equatable {
     
 }
 
-// MARK: - Angle + Comparable
-extension Angle: Comparable {
+// MARK: - DPAngle + Comparable
+extension DPAngle: Comparable {
     
     public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.degrees < rhs.degrees &&
@@ -54,8 +54,8 @@ extension Angle: Comparable {
     
 }
 
-// MARK: - Angle + Mathematical
-extension Angle: Mathematical {
+// MARK: - DPAngle + Mathematical
+extension DPAngle: Mathematical {
     
     prefix public static func - (x: Self) -> Self {
         .init(degrees: -x.degrees)

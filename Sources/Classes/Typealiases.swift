@@ -9,7 +9,7 @@ import Foundation
 
 /// Set of closure typealiases
 ///
-public typealias Closure = () -> Void
+public typealias DPClosure = () -> Void
 public typealias ContextClosure<T> = (T) -> Void
 public typealias ErrorClosure = ContextClosure<Error>
 public typealias ErrorOptionalClosure = ContextClosure<Error?>

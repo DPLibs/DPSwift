@@ -12,7 +12,7 @@ import UIKit
 ///
 public struct KeyboardInfo {
     
-    public let animationInfo: AnimationInfo
+    public let animationInfo: DPAnimationInfo
     public let isLocal: Bool
     public let frameBegin: CGRect
     public let frameEnd: CGRect

@@ -2,7 +2,7 @@ import Foundation
 
 /// Struct for determining the time interval unit.
 ///
-public struct TimeUnit {
+public struct DPTimeInterval {
     
     // MARK: - Props
     
@@ -57,8 +57,8 @@ public struct TimeUnit {
     
 }
 
-// MARK: - TimeUnit + Equatable
-extension TimeUnit: Equatable {
+// MARK: - DPTimeInterval + Equatable
+extension DPTimeInterval: Equatable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.milliseconds == rhs.milliseconds &&
@@ -69,8 +69,8 @@ extension TimeUnit: Equatable {
     
 }
 
-// MARK: - TimeUnit + Comparable
-extension TimeUnit: Comparable {
+// MARK: - DPTimeInterval + Comparable
+extension DPTimeInterval: Comparable {
     
     public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.milliseconds < rhs.milliseconds &&
@@ -81,34 +81,34 @@ extension TimeUnit: Comparable {
     
 }
 
-// MARK: - TimeUnit + TimeStructAdduction
-extension TimeUnit: TimeStructAdduction {
+// MARK: - DPTimeInterval + TimeStructAdduction
+extension DPTimeInterval: TimeStructAdduction {
     
     public var toDate: Date {
         .init(timeIntervalSince1970: self.seconds)
     }
     
-    public var toTimeStamp: TimeStamp {
+    public var toTimeStamp: DPTimeStamp {
         .init(milliseconds: self.milliseconds)
     }
     
-    public var toTimeUnit: TimeUnit {
+    public var toTimeUnit: DPTimeInterval {
         self
     }
     
 }
 
-// MARK: - TimeUnit + MathProtocol
-extension TimeUnit: ZeroAdduction {
+// MARK: - DPTimeInterval + MathProtocol
+extension DPTimeInterval: ZeroAdduction {
     
-    static public var zero: TimeUnit {
+    static public var zero: DPTimeInterval {
         .init(milliseconds: .zero)
     }
     
 }
 
-// MARK: - TimeUnit + Mathematical
-extension TimeUnit: Mathematical {
+// MARK: - DPTimeInterval + Mathematical
+extension DPTimeInterval: Mathematical {
     
     prefix public static func - (x: Self) -> Self {
         .init(milliseconds: -x.milliseconds)
