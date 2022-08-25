@@ -3,7 +3,7 @@ import UIKit
 
 /// Protocol for number adduction.
 ///
-public protocol NumberAdduction {
+public protocol DPNumberAdduction {
     
     /// Returns `Int`.
     ///
@@ -44,8 +44,8 @@ public protocol NumberAdduction {
     func isValidFractionalNumber(maximumIntegerDigits: Int, maximumFractionDigits: Int) -> Bool
 }
 
-// MARK: - NumberAdduction + Default
-public extension NumberAdduction {
+// MARK: - DPNumberAdduction + Default
+public extension DPNumberAdduction {
     
     func isValidFractionalNumber(maximumIntegerDigits: Int, maximumFractionDigits: Int) -> Bool {
         let formatter = NumberFormatter()
@@ -61,8 +61,8 @@ public extension NumberAdduction {
     
 }
 
-// MARK: - Int + NumberAdduction
-extension Int: NumberAdduction {
+// MARK: - Int + DPNumberAdduction
+extension Int: DPNumberAdduction {
     
     public var toInt: Int {
         self
@@ -98,8 +98,8 @@ extension Int: NumberAdduction {
     
 }
 
-// MARK: - Double + NumberAdduction
-extension Double: NumberAdduction {
+// MARK: - Double + DPNumberAdduction
+extension Double: DPNumberAdduction {
     
     public var toInt: Int {
         Int(self)
@@ -135,8 +135,8 @@ extension Double: NumberAdduction {
     
 }
 
-// MARK: - Float + NumberAdduction
-extension Float: NumberAdduction {
+// MARK: - Float + DPNumberAdduction
+extension Float: DPNumberAdduction {
     
     public var toInt: Int {
         Int(self)
@@ -172,8 +172,8 @@ extension Float: NumberAdduction {
     
 }
 
-// MARK: - CGFloat + NumberAdduction
-extension CGFloat: NumberAdduction {
+// MARK: - CGFloat + DPNumberAdduction
+extension CGFloat: DPNumberAdduction {
     
     public var toInt: Int {
         Int(self)
@@ -209,8 +209,8 @@ extension CGFloat: NumberAdduction {
     
 }
 
-// MARK: - NSNumber + NumberAdduction
-extension NSNumber: NumberAdduction {
+// MARK: - NSNumber + DPNumberAdduction
+extension NSNumber: DPNumberAdduction {
     
     public var toInt: Int {
         self.intValue

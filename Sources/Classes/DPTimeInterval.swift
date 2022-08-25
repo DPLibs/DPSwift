@@ -81,8 +81,8 @@ extension DPTimeInterval: Comparable {
     
 }
 
-// MARK: - DPTimeInterval + TimeStructAdduction
-extension DPTimeInterval: TimeStructAdduction {
+// MARK: - DPTimeInterval + DPTimeStructAdduction
+extension DPTimeInterval: DPTimeStructAdduction {
     
     public var toDate: Date {
         .init(timeIntervalSince1970: self.seconds)
@@ -99,7 +99,7 @@ extension DPTimeInterval: TimeStructAdduction {
 }
 
 // MARK: - DPTimeInterval + MathProtocol
-extension DPTimeInterval: ZeroAdduction {
+extension DPTimeInterval: DPZeroAdduction {
     
     static public var zero: DPTimeInterval {
         .init(milliseconds: .zero)
@@ -107,8 +107,8 @@ extension DPTimeInterval: ZeroAdduction {
     
 }
 
-// MARK: - DPTimeInterval + Mathematical
-extension DPTimeInterval: Mathematical {
+// MARK: - DPTimeInterval + DPMathematical
+extension DPTimeInterval: DPMathematical {
     
     prefix public static func - (x: Self) -> Self {
         .init(milliseconds: -x.milliseconds)

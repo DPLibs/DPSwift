@@ -130,8 +130,8 @@ extension DPTime: Comparable {
     
 }
 
-// MARK: - DPTime + ZeroAdduction
-extension DPTime: ZeroAdduction {
+// MARK: - DPTime + DPZeroAdduction
+extension DPTime: DPZeroAdduction {
     
     static public var zero: DPTime {
         .init(hours: .zero, minutes: .zero, seconds: .zero, milliseconds: .zero)

@@ -54,8 +54,8 @@ extension DPAngle: Comparable {
     
 }
 
-// MARK: - DPAngle + Mathematical
-extension DPAngle: Mathematical {
+// MARK: - DPAngle + DPMathematical
+extension DPAngle: DPMathematical {
     
     prefix public static func - (x: Self) -> Self {
         .init(degrees: -x.degrees)

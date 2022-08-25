@@ -2,7 +2,7 @@ import Foundation
 
 /// Protocol for time structs adduction.
 ///
-public protocol TimeStructAdduction {
+public protocol DPTimeStructAdduction {
     
     /// Returns `Date`.
     ///

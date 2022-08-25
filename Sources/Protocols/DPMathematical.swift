@@ -2,7 +2,7 @@ import Foundation
 
 /// Protocol for the implementation of mathematical operations.
 ///
-public protocol Mathematical {
+public protocol DPMathematical {
     prefix static func - (x: Self) -> Self
     prefix static func + (x: Self) -> Self
     

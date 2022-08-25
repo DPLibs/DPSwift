@@ -2,7 +2,7 @@ import Foundation
 
 /// Protocol for converting to `zero` for `Self`.
 ///
-public protocol ZeroAdduction {
+public protocol DPZeroAdduction {
     
     /// Returns `zero` for `Self`.
     ///

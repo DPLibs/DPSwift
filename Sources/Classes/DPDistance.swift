@@ -87,8 +87,8 @@ extension DPDistance: Comparable {
     
 }
 
-// MARK: - DPDistance + Mathematical
-extension DPDistance: Mathematical {
+// MARK: - DPDistance + DPMathematical
+extension DPDistance: DPMathematical {
     
     prefix public static func - (x: Self) -> Self {
         .init(millimeters: -x.millimeters)

@@ -131,8 +131,8 @@ extension DPTimeStamp: Comparable {
     
 }
 
-// MARK: - DPTimeStamp + ZeroAdduction
-extension DPTimeStamp: ZeroAdduction {
+// MARK: - DPTimeStamp + DPZeroAdduction
+extension DPTimeStamp: DPZeroAdduction {
     
     static public var zero: DPTimeStamp {
         .init(milliseconds: .zero)
@@ -140,8 +140,8 @@ extension DPTimeStamp: ZeroAdduction {
     
 }
 
-// MARK: - DPTimeStamp + TimeStructAdduction
-extension DPTimeStamp: TimeStructAdduction {
+// MARK: - DPTimeStamp + DPTimeStructAdduction
+extension DPTimeStamp: DPTimeStructAdduction {
     
     public var toDate: Date {
         .init(timeIntervalSince1970: self.seconds)
@@ -157,8 +157,8 @@ extension DPTimeStamp: TimeStructAdduction {
     
 }
 
-// MARK: - DPTimeStamp + Mathematical
-extension DPTimeStamp: Mathematical {
+// MARK: - DPTimeStamp + DPMathematical
+extension DPTimeStamp: DPMathematical {
     
     prefix public static func - (x: Self) -> Self {
         .init(milliseconds: -x.milliseconds)

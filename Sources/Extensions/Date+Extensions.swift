@@ -162,8 +162,8 @@ public extension Date {
     
 }
 
-// MARK: - Date + TimeStructAdduction
-extension Date: TimeStructAdduction {
+// MARK: - Date + DPTimeStructAdduction
+extension Date: DPTimeStructAdduction {
     
     public var toDate: Date {
         self
