@@ -3,7 +3,7 @@ import UIKit
 
 /// Protocol for number adduction optional.
 ///
-public protocol NumberAdductionOptional {
+public protocol DPNumberAdductionOptional {
     
     /// Retruns `true` if paramter is number.
     ///
@@ -48,8 +48,8 @@ public protocol NumberAdductionOptional {
     func isValidFractionalNumber(maximumIntegerDigits: Int, maximumFractionDigits: Int) -> Bool
 }
 
-// MARK: - String + NumberAdductionOptional
-extension String: NumberAdductionOptional {
+// MARK: - String + DPNumberAdductionOptional
+extension String: DPNumberAdductionOptional {
     
     public var isNumber: Bool {
         self.toInt != nil

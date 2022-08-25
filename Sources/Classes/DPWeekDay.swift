@@ -2,7 +2,7 @@ import Foundation
 
 /// Enum for determining the week day type.
 ///
-public enum WeekDay: Int {
+public enum DPWeekDay: Int {
     
     /// Sunday. RawValue = 1. RU: Воскресенье.
     ///
@@ -31,14 +31,19 @@ public enum WeekDay: Int {
     /// Saturday. RawValue = 7. RU: Суббота.
     ///
     case saturday = 7
+    
+    /// Default
+    ///
+    static let `default`: DPWeekDay = .sunday
 
 }
 
-public extension WeekDay {
+// MARK: - Public
+public extension DPWeekDay {
     
     /// `next` week day
     ///
-    var next: WeekDay {
+    var next: DPWeekDay {
         switch self {
         case .sunday:
             return .monday
@@ -59,7 +64,7 @@ public extension WeekDay {
 
     /// `previous` week day
     ///
-    var previous: WeekDay {
+    var previous: DPWeekDay {
         switch self {
         case .sunday:
             return .saturday
@@ -80,15 +85,15 @@ public extension WeekDay {
 
     /// Last day of the week if `self` is the start day
     ///
-    var weekEndDay: WeekDay {
+    var weekEndDay: DPWeekDay {
         self.generateWeek().last ?? self
     }
 
     /// Genetate week  if `self` is the start day
     ///
-    func generateWeek() -> [WeekDay] {
-        var result: [WeekDay] = [self]
-        var day: WeekDay = self
+    func generateWeek() -> [DPWeekDay] {
+        var result: [DPWeekDay] = [self]
+        var day: DPWeekDay = self
         
         while result.last != self.previous {
             let next = day.next
@@ -98,19 +103,19 @@ public extension WeekDay {
         
         return result
     }
-
-    #warning("To DPSwift")
-    var title: String {
-        let calendar = Calendar.current
-        let date = calendar.date(bySetting: .weekday, value: self.rawValue, of: .init())
-        let title = date?.toLocalString(withFormatType: .init("E")) ?? ""
-        return title
+    
+    func toLocalString(with format: StringFormat = .e, calendar: Calendar = .current, locale: Locale = .current) -> String? {
+        guard let date = calendar.date(bySetting: .weekday, value: self.rawValue, of: Date()) else { return nil }
+        let dateFromatType = DPDateFormatType(format.rawValue)
+        let localString = date.toLocalString(withFormatType: dateFromatType, locale: locale)
+        
+        return localString
     }
     
 }
 
 // MARK: - StringFormat
-public extension WeekDay {
+public extension DPWeekDay {
     
     /// Used Date and time patterns `E`
     ///
@@ -134,12 +139,14 @@ public extension WeekDay {
         
     }
     
-    func toLocalString(with format: StringFormat) -> String {
-        let calendar = Calendar.current
-        let date = calendar.date(bySetting: .weekday, value: self.rawValue, of: .init())
-        let dateFromatType = DateFormatType(format.rawValue)
-        let localString = date?.toLocalString(withFormatType: dateFromatType) ?? ""
-        return localString
+}
+
+// MARK: - Calendar + DPWeekDay
+public extension Calendar {
+    
+    var firstDPWeekDay: DPWeekDay {
+        get { DPWeekDay(rawValue: self.firstWeekday) ?? .default }
+        set { self.firstWeekday = newValue.rawValue }
     }
     
 }

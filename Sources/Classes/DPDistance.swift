@@ -2,7 +2,7 @@ import Foundation
 
 /// Struct for defining the distance.
 ///
-public struct Distance {
+public struct DPDistance {
     
     // MARK: - Props
     
@@ -69,8 +69,8 @@ public struct Distance {
     
 }
 
-// MARK: - Distance + Equatable
-extension Distance: Equatable {
+// MARK: - DPDistance + Equatable
+extension DPDistance: Equatable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.millimeters == rhs.millimeters
@@ -78,8 +78,8 @@ extension Distance: Equatable {
     
 }
 
-// MARK: - Distance + Equatable
-extension Distance: Comparable {
+// MARK: - DPDistance + Equatable
+extension DPDistance: Comparable {
     
     public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.millimeters < rhs.millimeters
@@ -87,8 +87,8 @@ extension Distance: Comparable {
     
 }
 
-// MARK: - Distance + Mathematical
-extension Distance: Mathematical {
+// MARK: - DPDistance + DPMathematical
+extension DPDistance: DPMathematical {
     
     prefix public static func - (x: Self) -> Self {
         .init(millimeters: -x.millimeters)

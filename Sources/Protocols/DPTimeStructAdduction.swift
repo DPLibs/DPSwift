@@ -2,7 +2,7 @@ import Foundation
 
 /// Protocol for time structs adduction.
 ///
-public protocol TimeStructAdduction {
+public protocol DPTimeStructAdduction {
     
     /// Returns `Date`.
     ///
@@ -10,9 +10,9 @@ public protocol TimeStructAdduction {
     
     /// Returns `TimeStamp`.
     ///
-    var toTimeStamp: TimeStamp { get }
+    var toTimeStamp: DPTimeStamp { get }
     
     /// Returns `TimeUnit`.
     ///
-    var toTimeUnit: TimeUnit { get }
+    var toTimeUnit: DPTimeInterval { get }
 }

@@ -3,7 +3,7 @@ import UIKit
 
 /// Protocol for converting to `Date`.
 ///
-public protocol DateAdduction {
+public protocol DPDateAdduction {
     
     /// Returns the date assuming that `Self` is in `seconds`.
     ///
@@ -14,8 +14,8 @@ public protocol DateAdduction {
     var toDateAsMilliseconds: Date { get }
 }
 
-// MARK: - Int + DateAdduction
-extension Int: DateAdduction {
+// MARK: - Int + DPDateAdduction
+extension Int: DPDateAdduction {
     
     public var toDateAsSeconds: Date {
         .init(timeIntervalSince1970: self.toTimeInterval)
@@ -27,8 +27,8 @@ extension Int: DateAdduction {
     
 }
 
-// MARK: - Double + DateAdduction
-extension Double: DateAdduction {
+// MARK: - Double + DPDateAdduction
+extension Double: DPDateAdduction {
     
     public var toDateAsSeconds: Date {
         .init(timeIntervalSince1970: self.toTimeInterval)
@@ -40,8 +40,8 @@ extension Double: DateAdduction {
     
 }
 
-// MARK: - Float + DateAdduction
-extension Float: DateAdduction {
+// MARK: - Float + DPDateAdduction
+extension Float: DPDateAdduction {
     
     public var toDateAsSeconds: Date {
         .init(timeIntervalSince1970: self.toTimeInterval)
@@ -53,8 +53,8 @@ extension Float: DateAdduction {
     
 }
 
-// MARK: - CGFloat + DateAdduction
-extension CGFloat: DateAdduction {
+// MARK: - CGFloat + DPDateAdduction
+extension CGFloat: DPDateAdduction {
     
     public var toDateAsSeconds: Date {
         .init(timeIntervalSince1970: self.toTimeInterval)
@@ -66,8 +66,8 @@ extension CGFloat: DateAdduction {
     
 }
 
-// MARK: - NSNumber + DateAdduction
-extension NSNumber: DateAdduction {
+// MARK: - NSNumber + DPDateAdduction
+extension NSNumber: DPDateAdduction {
     
     public var toDateAsSeconds: Date {
         .init(timeIntervalSince1970: self.toTimeInterval)

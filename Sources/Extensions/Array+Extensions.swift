@@ -9,11 +9,21 @@ import Foundation
 
 public extension Array {
     
-    /// Return empty array of elements.
-    /// - Returns: Empty array of elements.
+    // MARK: - Subscripts
+    
+    /// Get/set an array element or nil by index in a safe method.
+    /// - Parameter index: Index of element.
+    /// - Returns: `Element` or `nil`.
     ///
-    static var empty: Self {
-        []
+    subscript(safe index: Index) -> Element? {
+        get {
+            guard self.indices.contains(index) else { return nil }
+            return self[index]
+        }
+        set(newValue) {
+            guard self.indices.contains(index), let element = newValue else { return }
+            self[index] = element
+        }
     }
     
     // MARK: - Remove elements methods

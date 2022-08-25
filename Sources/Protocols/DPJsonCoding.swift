@@ -1,9 +1,8 @@
 import Foundation
-import UIKit
 
 /// Protocol for encoding `Json`.
 ///
-public protocol JsonCoding {
+public protocol DPJsonCoding {
     
     // MARK: - Typealias
     
@@ -76,8 +75,8 @@ public protocol JsonCoding {
     func createJsonString() -> String?
 }
 
-// MARK: - JsonCoding + Codable
-public extension JsonCoding where Self: Codable {
+// MARK: - DPJsonCoding + Codable
+public extension DPJsonCoding where Self: Codable {
     
     var valueForCustomJson: Any? {
         guard let json = self.createJsonDictionary(), !json.isEmpty else { return self }

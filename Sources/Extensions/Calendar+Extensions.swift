@@ -12,13 +12,13 @@ public extension Calendar {
     /// Return `true` if self of this year.
     ///
     func isDateInYearNow(_ date: Date) -> Bool {
-        self.component(.year, from: .init()) == self.component(.year, from: date)
+        self.component(.year, from: Date()) == self.component(.year, from: date)
     }
     
     /// Return `true` if self of this month.
     ///
     func isDateInMonthNow(_ date: Date) -> Bool {
-        self.component(.month, from: .init()) == self.component(.month, from: date)
+        self.component(.month, from: Date()) == self.component(.month, from: date)
     }
     
 }

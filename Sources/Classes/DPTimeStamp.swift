@@ -2,7 +2,7 @@ import Foundation
 
 /// Struct for determining the timeStamp.
 ///
-public struct TimeStamp {
+public struct DPTimeStamp {
     
     // MARK: - Props
     
@@ -65,35 +65,35 @@ public struct TimeStamp {
     // MARK: - Methods
     
     /// Adds `time` as an interval of milliseconds.
-    /// - Parameter time: Value of `Time`.
+    /// - Parameter time: Value of `DPTime`.
     ///
-    public func addingDate(_ date: Date?) -> TimeStamp {
+    public func addingDate(_ date: Date?) -> DPTimeStamp {
         let interval = (date?.timeIntervalSince1970 ?? 0.0) * 1000
         
         return .init(milliseconds: self.milliseconds + interval)
     }
     
     /// Adds `time` as an interval of milliseconds.
-    /// - Parameter time: Value of `Time`.
+    /// - Parameter time: Value of `DPTime`.
     ///
-    public func addingTime(_ time: Time?) -> TimeStamp {
+    public func addingTime(_ time: DPTime?) -> DPTimeStamp {
         let interval = time?.toMillesecondsInterval().toDouble ?? 0.0
         
         return .init(milliseconds: self.milliseconds + interval)
     }
     
     /// Adds `timeInit` as milliseconds.
-    /// - Parameter timeUnit: Value of `TimeUnit`.
+    /// - Parameter timeUnit: Value of `DPTimeInterval`.
     ///
-    public func addingTimeUnit(_ timeUnit: TimeUnit?) -> TimeStamp {
+    public func addingTimeUnit(_ timeUnit: DPTimeInterval?) -> DPTimeStamp {
         let interval = timeUnit?.milliseconds ?? 0.0
         
         return .init(milliseconds: self.milliseconds + interval)
     }
 }
 
-// MARK: - TimeStamp + Codable
-extension TimeStamp: Codable {
+// MARK: - DPTimeStamp + Codable
+extension DPTimeStamp: Codable {
     
     // MARK: - Decodable
     public init(from decoder: Decoder) throws {
@@ -111,8 +111,8 @@ extension TimeStamp: Codable {
     
 }
 
-// MARK: - TimeStamp + Equatable
-extension TimeStamp: Equatable {
+// MARK: - DPTimeStamp + Equatable
+extension DPTimeStamp: Equatable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.milliseconds == rhs.milliseconds &&
@@ -121,8 +121,8 @@ extension TimeStamp: Equatable {
     
 }
 
-// MARK: - TimeStamp + Comparable
-extension TimeStamp: Comparable {
+// MARK: - DPTimeStamp + Comparable
+extension DPTimeStamp: Comparable {
     
     public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.milliseconds < rhs.milliseconds &&
@@ -131,34 +131,34 @@ extension TimeStamp: Comparable {
     
 }
 
-// MARK: - TimeStamp + ZeroAdduction
-extension TimeStamp: ZeroAdduction {
+// MARK: - DPTimeStamp + DPZeroAdduction
+extension DPTimeStamp: DPZeroAdduction {
     
-    static public var zero: TimeStamp {
+    static public var zero: DPTimeStamp {
         .init(milliseconds: .zero)
     }
     
 }
 
-// MARK: - TimeStamp + TimeStructAdduction
-extension TimeStamp: TimeStructAdduction {
+// MARK: - DPTimeStamp + DPTimeStructAdduction
+extension DPTimeStamp: DPTimeStructAdduction {
     
     public var toDate: Date {
         .init(timeIntervalSince1970: self.seconds)
     }
     
-    public var toTimeStamp: TimeStamp {
+    public var toTimeStamp: DPTimeStamp {
         self
     }
     
-    public var toTimeUnit: TimeUnit {
+    public var toTimeUnit: DPTimeInterval {
         .init(milliseconds: self.milliseconds)
     }
     
 }
 
-// MARK: - TimeStamp + Mathematical
-extension TimeStamp: Mathematical {
+// MARK: - DPTimeStamp + DPMathematical
+extension DPTimeStamp: DPMathematical {
     
     prefix public static func - (x: Self) -> Self {
         .init(milliseconds: -x.milliseconds)

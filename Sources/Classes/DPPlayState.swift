@@ -2,7 +2,7 @@ import Foundation
 
 /// Enum for determining the play state.
 ///
-public enum PlayState {
+public enum DPPlayState {
     
     /// Play state.
     ///
